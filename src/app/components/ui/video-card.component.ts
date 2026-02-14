@@ -42,7 +42,7 @@ import { HostListener } from '@angular/core';
           [muted]="isMuted()"
           loop
           (mouseenter)="hoverPlay()"
-          (mouseleave)="hoverPause()"
+          (mouseleave)="onMouseLeave()"
           (dblclick)="toggleExpand()"
         >
             <source [src]="optimizedUrl()" [type]="'video/mp4'">
@@ -272,6 +272,19 @@ export class VideoCardComponent {
   onHover(state: boolean) {
     if (this.isExpanded()) return; // ne pas hover si fullscreen
     this.isHovered.set(state);
+  }
+
+  onMouseLeave() {
+    const video = this.videoElement()?.nativeElement;
+    if (!video) return;
+
+    video.pause();
+    video.currentTime = 0;
+
+    // 🔥 IMPORTANT : on ferme le mode expanded
+    if (this.isExpanded()) {
+      this.isExpanded.set(false);
+    }
   }
 
 }
