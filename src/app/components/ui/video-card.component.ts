@@ -11,7 +11,7 @@ import { ProjectMedia } from '../../services/content.service';
     <div class="group relative bg-slate-900 rounded-lg overflow-hidden shadow-lg h-full border border-slate-800">
       
       <!-- Video Player container -->
-      <div class="aspect-[4/3] relative bg-black">
+      <div class="aspect-video">
         
         <!-- Optimized Video Element -->
         <video 
@@ -23,7 +23,7 @@ import { ProjectMedia } from '../../services/content.service';
           [controls]="isPlaying()"
           (ended)="onEnded()"
         >
-          <source [src]="optimizedUrl()" [type]="'video/' + (item().format || 'mp4')">
+          <source [src]="optimizedUrl()" type="video/mp4">
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
 
@@ -63,12 +63,16 @@ import { ProjectMedia } from '../../services/content.service';
 })
 export class VideoCardComponent {
   item = input.required<ProjectMedia>();
-  
+
   isPlaying = signal(false);
   videoElement = viewChild<ElementRef<HTMLVideoElement>>('videoPlayer');
 
   // Compute optimized Cloudinary URL
   optimizedUrl = computed(() => {
+    return this.item().url;
+  });
+
+  /*optimizedUrl = computed(() => {
     const originalUrl = this.item().url;
     // Check if it's a Cloudinary URL to inject transformations
     if (originalUrl.includes('cloudinary.com')) {
@@ -78,7 +82,8 @@ export class VideoCardComponent {
       return originalUrl.replace('/upload/', '/upload/f_auto,q_auto,vc_auto/');
     }
     return originalUrl;
-  });
+  });*/
+
 
   // Generate poster from video URL (Cloudinary specific: replace .mp4 with .jpg)
   posterUrl = computed(() => {
@@ -98,7 +103,7 @@ export class VideoCardComponent {
     this.isPlaying.set(false);
     // Optional: Reset to poster
     if (this.videoElement()?.nativeElement) {
-       this.videoElement()!.nativeElement.load(); 
+      this.videoElement()!.nativeElement.load();
     }
   }
 

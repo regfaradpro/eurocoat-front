@@ -67,35 +67,36 @@ export class ContentService {
    */
   async fetchCloudinaryVideos(): Promise<ProjectMedia[]> {
     try {
-      const apiVideos = await firstValueFrom(
+      const response = await firstValueFrom(
         this.http.get<any[]>(this.apiUrl)
       );
 
-      const cloudName = 'eurocoat'; // ⚠️ METS ICI TON VRAI CLOUDINARY NAME
+      const cloudName = 'eurocoat';
 
-      const mappedVideos: ProjectMedia[] = (apiVideos || []).map(video => ({
+      const videos: ProjectMedia[] = response.map(video => ({
         type: 'video',
         category: 'process',
-        title: video.public_id.replace(/_/g, ' '),
-        url: `https://res.cloudinary.com/${cloudName}/video/upload/f_mp4/${video.public_id}.mp4`,
+        title: video.public_id,
         public_id: video.public_id,
+        format: 'mp4', // FORCE MP4
         width: video.width,
         height: video.height,
-        format: video.format
+        url: `https://res.cloudinary.com/${cloudName}/video/upload/f_mp4,q_auto/${video.public_id}.mp4`
       }));
 
       this.portfolio.update(current => {
         const imagesOnly = current.filter(i => i.type !== 'video');
-        return [...imagesOnly, ...mappedVideos];
+        return [...imagesOnly, ...videos];
       });
 
-      return mappedVideos;
+      return videos;
 
     } catch (error) {
       console.error('Erreur API vidéos:', error);
       return [];
     }
   }
+
 
 
 
