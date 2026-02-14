@@ -23,6 +23,7 @@ import { ContentService } from './services/content.service';
 export class AppComponent {
 
   constructor(private contentService: ContentService) {
+    console.log('App started');
     this.contentService.fetchCloudinaryVideos();
   }
 
