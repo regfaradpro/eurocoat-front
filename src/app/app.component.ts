@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/shared/navbar.component';
 import { FooterComponent } from './components/shared/footer.component';
+import { ContentService } from './services/content.service';
+
 
 @Component({
   selector: 'app-root',
@@ -18,4 +20,10 @@ import { FooterComponent } from './components/shared/footer.component';
     </div>
   `
 })
-export class AppComponent {}
+export class AppComponent {
+
+  constructor(private contentService: ContentService) {
+    this.contentService.fetchCloudinaryVideos();
+  }
+
+}

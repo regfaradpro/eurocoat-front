@@ -1,5 +1,8 @@
 
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+
 
 export interface ProjectMedia {
   type: 'image' | 'video';
@@ -19,7 +22,10 @@ export interface ProjectMedia {
 })
 export class ContentService {
   companyName = signal('EuroCoat Prestige');
-  
+  private http = inject(HttpClient);
+  private apiUrl = 'https://eurocoat-api.onrender.com/api/videos';
+
+
   // Static Images (Local/Stock)
   private staticImages: ProjectMedia[] = [
     { type: 'image', category: 'industrial', url: 'https://picsum.photos/800/600?random=1', title: 'Parking Souterrain Casablanca' },
@@ -60,53 +66,25 @@ export class ContentService {
    * Endpoint: GET /api/videos
    */
   async fetchCloudinaryVideos(): Promise<ProjectMedia[]> {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const videos = await firstValueFrom(
+        this.http.get<ProjectMedia[]>(this.apiUrl)
+      );
 
-    // MOCK DATA: This matches exactly what the NestJS backend described below will return
-    const mockCloudinaryResponse: ProjectMedia[] = [
-      {
-        type: 'video',
-        category: 'process',
-        title: 'Application Résine Epoxy - Timelapse',
-        url: 'https://res.cloudinary.com/demo/video/upload/dog.mp4', // Demo URL for visualization
-        public_id: 'EuroCoat Prestige/ECP - Videos/timelapse_resin',
-        width: 1920,
-        height: 1080,
-        duration: 15.4,
-        format: 'mp4'
-      },
-      {
-        type: 'video',
-        category: 'process',
-        title: 'Technique Wrapping 3M',
-        url: 'https://res.cloudinary.com/demo/video/upload/c_crop,h_200,w_300/dog.mp4', 
-        public_id: 'EuroCoat Prestige/ECP - Videos/wrapping_demo',
-        width: 1920,
-        height: 1080,
-        duration: 42.0,
-        format: 'mp4'
-      },
-      {
-        type: 'video',
-        category: 'process',
-        title: 'Finition Sol Industriel',
-        url: 'https://res.cloudinary.com/demo/video/upload/e_blur:200/dog.mp4',
-        public_id: 'EuroCoat Prestige/ECP - Videos/industrial_finish',
-        width: 1080,
-        height: 1920, // Portrait video
-        duration: 25.5,
-        format: 'mp4'
+      if (videos) {
+        this.portfolio.update(current => {
+          const imagesOnly = current.filter(i => i.type !== 'video');
+          return [...imagesOnly, ...videos];
+        });
       }
-    ];
 
-    // Merge videos into portfolio
-    this.portfolio.update(current => {
-      // Remove old videos to prevent duplicates if fetched multiple times
-      const imagesOnly = current.filter(i => i.type !== 'video');
-      return [...imagesOnly, ...mockCloudinaryResponse];
-    });
+      return videos || [];
 
-    return mockCloudinaryResponse;
+    } catch (error) {
+      console.error('Erreur API vidéos:', error);
+      return [];
+    }
   }
+
+
 }
