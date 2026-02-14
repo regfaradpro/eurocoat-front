@@ -68,11 +68,11 @@ export class VideoCardComponent {
   videoElement = viewChild<ElementRef<HTMLVideoElement>>('videoPlayer');
 
   // Compute optimized Cloudinary URL
-  optimizedUrl = computed(() => {
-    return this.item().url;
-  });
-
   /*optimizedUrl = computed(() => {
+    return this.item().url;
+  });*/
+
+  optimizedUrl = computed(() => {
     const originalUrl = this.item().url;
     // Check if it's a Cloudinary URL to inject transformations
     if (originalUrl.includes('cloudinary.com')) {
@@ -82,7 +82,7 @@ export class VideoCardComponent {
       return originalUrl.replace('/upload/', '/upload/f_auto,q_auto,vc_auto/');
     }
     return originalUrl;
-  });*/
+  });
 
 
   // Generate poster from video URL (Cloudinary specific: replace .mp4 with .jpg)
