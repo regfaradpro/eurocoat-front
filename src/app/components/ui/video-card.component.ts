@@ -21,8 +21,6 @@ import { HostListener } from '@angular/core';
         class="relative bg-black overflow-hidden transition-all duration-500"
         [class.scale-105]="isHovered() && !isExpanded()"
         [class.z-20]="isHovered()"
-        [class.aspect-[9/16]]="isPortrait()"
-        [class.aspect-[16/9]]="!isPortrait()"
         (mouseenter)="onHover(true)"
         (mouseleave)="onHover(false)"
       >
