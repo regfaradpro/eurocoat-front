@@ -12,30 +12,40 @@ import { ProjectMedia } from '../../services/content.service';
       
       <!-- Video Player container -->
       <div
-        class="relative bg-black" 
+        class="relative bg-black overflow-hidden" 
         [class.aspect-[9/16]]="isPortrait()"
         [class.aspect-[16/9]]="!isPortrait()"
       >
+      @if (posterUrl()) {
+        <div 
+          class="absolute inset-0 bg-center bg-cover blur-2xl scale-110 opacity-40"
+          [style.background-image]="'url(' + posterUrl() + ')'"
+        ></div>
+      }
 
         <!-- Optimized Video Element -->
         <video 
-          #videoPlayer
-          [poster]="posterUrl()"
-          class="w-full h-full object-contain bg-gradient-to-br from-slate-900 to-black"
-          playsinline
-          preload="metadata"
-          [controls]="isPlaying()"
-          (ended)="onEnded()"
-        >
-          <source [src]="optimizedUrl()" type="video/mp4">
-          Votre navigateur ne supporte pas la lecture de vidéos.
+            #videoPlayer
+            [poster]="posterUrl()"
+            class="w-full h-full object-contain bg-black transition-all duration-500"
+            playsinline
+            loading="lazy"
+            preload="none"
+            muted
+            loop
+            (mouseenter)="hoverPlay()"
+            (mouseleave)="hoverPause()"
+            (ended)="onEnded()"
+          >
+            <source [src]="optimizedUrl()" [type]="'video/mp4'">
         </video>
+
 
         <!-- Custom Play Button Overlay (Hidden when playing) -->
         @if (!isPlaying()) {
           <div 
             (click)="play()"
-            class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors cursor-pointer z-10">
+            class="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm transition-all duration-500 opacity-100 group-hover:opacity-0">
             <div class="w-16 h-16 bg-amber-500/90 hover:bg-amber-500 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm transform group-hover:scale-110 transition-all duration-300">
               <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
@@ -125,4 +135,20 @@ export class VideoCardComponent {
     const sec = Math.floor(seconds % 60);
     return `${min}:${sec < 10 ? '0' + sec : sec}`;
   }
+
+  hoverPlay() {
+    const video = this.videoElement()?.nativeElement;
+    if (!video) return;
+
+    video.play();
+  }
+
+  hoverPause() {
+    const video = this.videoElement()?.nativeElement;
+    if (!video) return;
+
+    video.pause();
+    video.currentTime = 0;
+  }
+
 }
