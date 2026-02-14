@@ -15,6 +15,10 @@ export class AppFacade {
   private isLoadingVideosSignal = signal<boolean>(false);
   private videosLoadedSignal = signal<boolean>(false);
 
+  constructor() {
+    this.loadVideos();
+  }
+
   // Exposed Signals
   readonly companyName = this.contentService.companyName;
   readonly services = this.contentService.services;
