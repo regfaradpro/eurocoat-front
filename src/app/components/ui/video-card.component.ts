@@ -11,13 +11,17 @@ import { ProjectMedia } from '../../services/content.service';
     <div class="group relative bg-slate-900 rounded-lg overflow-hidden shadow-lg h-full border border-slate-800">
       
       <!-- Video Player container -->
-      <div class="aspect-video">
-        
+      <div
+        class="relative bg-black" 
+        [class.aspect-[9/16]]="isPortrait()"
+        [class.aspect-[16/9]]="!isPortrait()"
+      >
+
         <!-- Optimized Video Element -->
         <video 
           #videoPlayer
           [poster]="posterUrl()"
-          class="w-full h-full object-cover"
+          class="w-full h-full object-contain bg-black"
           playsinline
           preload="metadata"
           [controls]="isPlaying()"
@@ -66,6 +70,14 @@ export class VideoCardComponent {
 
   isPlaying = signal(false);
   videoElement = viewChild<ElementRef<HTMLVideoElement>>('videoPlayer');
+
+  isPortrait = computed(() => {
+    const item = this.item();
+    return item.height && item.width
+      ? item.height > item.width
+      : false;
+  });
+
 
   // Compute optimized Cloudinary URL
   /*optimizedUrl = computed(() => {
