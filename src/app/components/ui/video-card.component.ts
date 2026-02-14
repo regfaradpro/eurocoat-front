@@ -21,7 +21,7 @@ import { ProjectMedia } from '../../services/content.service';
         <video 
           #videoPlayer
           [poster]="posterUrl()"
-          class="w-full h-full object-contain bg-black"
+          class="w-full h-full object-contain bg-gradient-to-br from-slate-900 to-black"
           playsinline
           preload="metadata"
           [controls]="isPlaying()"
