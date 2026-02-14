@@ -88,36 +88,62 @@ import { HostListener } from '@angular/core';
     </div>
     @if (isExpanded()) {
       <div
-        class="fixed top-0 left-0 w-screen h-screen
-              z-[9999] bg-black/95
-              flex items-center justify-center"
-        (click)="toggleExpand()"
+        class="fixed inset-0 z-[9999]
+              flex items-center justify-center
+              bg-black/80 backdrop-blur-sm
+              transition-opacity duration-300"
       >
+
+        <!-- zone cliquable pour fermer -->
         <div
-          class="relative flex items-center justify-center
-                w-full h-full"
-          (click)="$event.stopPropagation()"
+          class="absolute inset-0"
+          (click)="toggleExpand()"
+        ></div>
+
+        <!-- Conteneur vidéo -->
+        <div
+          class="relative z-10
+                w-auto max-w-[90vw]
+                max-h-[90vh]
+                animate-[zoomIn_0.25s_ease-out]"
         >
+
           <video
             [src]="optimizedUrl()"
-            class="max-h-[90vh] max-w-[90vw] object-contain"
+            class="rounded-2xl shadow-2xl object-contain max-h-[90vh]"
             autoplay
             controls
           ></video>
 
+          <!-- Bouton fermeture -->
           <button
             (click)="toggleExpand()"
-            class="absolute top-6 right-6 text-white text-4xl"
+            class="absolute -top-12 right-0
+                  text-white text-3xl
+                  hover:scale-110 transition"
           >
             ✕
           </button>
+
         </div>
       </div>
     }
   `,
   styles: [`
-    :host { display: block; height: 100%; }
-  `]
+  :host { display: block; height: 100%; }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.85);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+`]
+
 })
 export class VideoCardComponent {
   [x: string]: any;
