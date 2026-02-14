@@ -11,11 +11,7 @@ import { ProjectMedia } from '../../services/content.service';
     <div class="group relative bg-slate-900 rounded-lg overflow-hidden shadow-lg h-full border border-slate-800">
       
       <!-- Video Player container -->
-      <div
-        class="relative bg-black overflow-hidden" 
-        [class.aspect-[9/16]]="isPortrait()"
-        [class.aspect-[16/9]]="!isPortrait()"
-      >
+      <div class="relative bg-black overflow-hidden">
       @if (posterUrl()) {
         <div 
           class="absolute inset-0 bg-center bg-cover blur-2xl scale-110 opacity-40"
