@@ -17,18 +17,13 @@ import { HostListener } from '@angular/core';
             border border-slate-100 hover:-translate-y-1">
 
       <!-- Video Player container -->
-      <div
-        class="relative bg-black overflow-hidden transition-all duration-500"
-        [class.w-[90vw]]="isExpanded()"
-        [class.max-w-5xl]="isExpanded()"
-      >
-
-      @if (posterUrl()) {
-        <div 
-          class="absolute inset-0 bg-center bg-cover blur-3xl scale-110 opacity-50 z-0"
-          [style.background-image]="'url(' + posterUrl() + ')'"
-        ></div>
-      }
+      <div class="relative bg-black overflow-hidden transition-all duration-500">
+        @if (posterUrl()) {
+          <div 
+            class="absolute inset-0 bg-center bg-cover blur-3xl scale-110 opacity-50 z-0"
+            [style.background-image]="'url(' + posterUrl() + ')'"
+          ></div>
+        }
 
         <!-- Optimized Video Element -->
         <video 
@@ -93,24 +88,26 @@ import { HostListener } from '@angular/core';
     </div>
     @if (isExpanded()) {
       <div
-        class="fixed inset-0 z-50 bg-black/90
+        class="fixed top-0 left-0 w-screen h-screen
+              z-[9999] bg-black/95
               flex items-center justify-center"
         (click)="toggleExpand()"
       >
         <div
-          class="relative flex items-center justify-center w-full h-full"
+          class="relative flex items-center justify-center
+                w-full h-full"
           (click)="$event.stopPropagation()"
         >
           <video
             [src]="optimizedUrl()"
-            class="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
+            class="max-h-[90vh] max-w-[90vw] object-contain"
             autoplay
             controls
           ></video>
 
           <button
             (click)="toggleExpand()"
-            class="absolute top-6 right-6 text-white text-4xl font-light"
+            class="absolute top-6 right-6 text-white text-4xl"
           >
             ✕
           </button>
