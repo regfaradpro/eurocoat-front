@@ -2,6 +2,9 @@
 import { Component, input, computed, signal, ElementRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectMedia } from '../../services/content.service';
+import { inject } from '@angular/core';
+import { VideoPlaybackService } from '../../core/services/video-playback.service';
+
 
 @Component({
   selector: 'app-video-card',
@@ -76,6 +79,7 @@ import { ProjectMedia } from '../../services/content.service';
   `]
 })
 export class VideoCardComponent {
+  private playbackService = inject(VideoPlaybackService);
   item = input.required<ProjectMedia>();
 
   isPlaying = signal(false);
@@ -140,6 +144,7 @@ export class VideoCardComponent {
     const video = this.videoElement()?.nativeElement;
     if (!video) return;
 
+    this.playbackService.register(video);
     video.play();
   }
 
@@ -149,6 +154,13 @@ export class VideoCardComponent {
 
     video.pause();
     video.currentTime = 0;
+  }
+
+  ngOnDestroy() {
+    const video = this.videoElement()?.nativeElement;
+    if (video) {
+      this.playbackService.unregister(video);
+    }
   }
 
 }
