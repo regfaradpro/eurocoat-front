@@ -11,8 +11,11 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="group relative bg-slate-900 rounded-lg overflow-hidden shadow-lg h-full border border-slate-800">
-      
+    <div class="group relative bg-white rounded-2xl overflow-hidden 
+            shadow-md hover:shadow-2xl transition-all duration-500 
+            border border-slate-100 hover:-translate-y-2 
+            hover:shadow-black/20">
+
       <!-- Video Player container -->
       <div
         class="relative bg-black overflow-hidden" 
@@ -21,7 +24,7 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
       >
       @if (posterUrl()) {
         <div 
-          class="absolute inset-0 bg-center bg-cover blur-2xl scale-110 opacity-40"
+          class="absolute inset-0 bg-center bg-cover blur-3xl scale-110 opacity-50 z-0"
           [style.background-image]="'url(' + posterUrl() + ')'"
         ></div>
       }
@@ -30,7 +33,7 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
         <video 
             #videoPlayer
             [poster]="posterUrl()"
-            class="w-full h-full object-contain bg-black transition-all duration-500"
+            class="relative z-10 w-full h-full object-contain bg-black transition-all duration-700 group-hover:scale-105"
             playsinline
             loading="lazy"
             preload="none"
@@ -48,7 +51,9 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
         @if (!isPlaying()) {
           <div 
             (click)="play()"
-            class="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm transition-all duration-500 opacity-100 group-hover:opacity-0">
+            class="absolute inset-0 flex items-center justify-center 
+                  bg-gradient-to-t from-black/60 via-black/20 to-transparent
+                  transition-all duration-500 opacity-100 group-hover:opacity-0">  
             <div class="w-16 h-16 bg-amber-500/90 hover:bg-amber-500 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm transform group-hover:scale-110 transition-all duration-300">
               <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
@@ -70,7 +75,9 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
         <span class="text-amber-600 text-xs font-bold uppercase tracking-wider mb-1 block">
           {{ item().category }}
         </span>
-        <h3 class="text-slate-900 font-bold text-lg leading-tight">{{ item().title }}</h3>
+        <h3 class="text-slate-900 font-semibold text-base leading-snug tracking-tight">
+          {{ item().title }}
+        </h3>
       </div>
     </div>
   `,
