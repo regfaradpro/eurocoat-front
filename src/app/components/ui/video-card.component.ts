@@ -21,8 +21,6 @@ import { HostListener } from '@angular/core';
         class="relative bg-black overflow-hidden transition-all duration-500"
         [class.w-[90vw]]="isExpanded()"
         [class.max-w-5xl]="isExpanded()"
-        [class.aspect-[9/16]]="isPortrait()"
-        [class.aspect-[16/9]]="!isPortrait()"
       >
 
       @if (posterUrl()) {
@@ -95,33 +93,31 @@ import { HostListener } from '@angular/core';
     </div>
     @if (isExpanded()) {
       <div
-        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md
-              flex items-center justify-center p-6"
+        class="fixed inset-0 z-50 bg-black/90
+              flex items-center justify-center"
         (click)="toggleExpand()"
       >
         <div
-          class="relative w-full max-w-5xl"
+          class="relative flex items-center justify-center w-full h-full"
           (click)="$event.stopPropagation()"
         >
           <video
             [src]="optimizedUrl()"
-            class="w-full h-auto max-h-[85vh] object-contain rounded-xl"
+            class="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
             autoplay
             controls
           ></video>
 
           <button
             (click)="toggleExpand()"
-            class="absolute top-4 right-4 text-white text-3xl"
+            class="absolute top-6 right-6 text-white text-4xl font-light"
           >
             ✕
           </button>
         </div>
       </div>
     }
-
-  `
-  ,
+  `,
   styles: [`
     :host { display: block; height: 100%; }
   `]
