@@ -12,19 +12,9 @@ import { HostListener } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div
-        class="group bg-white rounded-2xl overflow-hidden
-              shadow-md hover:shadow-2xl transition-all duration-500
-              border border-slate-100 hover:-translate-y-1"
-        [class.fixed]="isExpanded()"
-        [class.inset-0]="isExpanded()"
-        [class.z-50]="isExpanded()"
-        [class.flex]="isExpanded()"
-        [class.items-center]="isExpanded()"
-        [class.justify-center]="isExpanded()"
-        [class.bg-black/80]="isExpanded()"
-      >
-
+    <div class="group bg-white rounded-2xl overflow-hidden
+            shadow-md hover:shadow-2xl transition-all duration-500
+            border border-slate-100 hover:-translate-y-1">
 
       <!-- Video Player container -->
       <div
@@ -103,7 +93,35 @@ import { HostListener } from '@angular/core';
         </h3>
       </div>
     </div>
-  `,
+    @if (isExpanded()) {
+      <div
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md
+              flex items-center justify-center p-6"
+        (click)="toggleExpand()"
+      >
+        <div
+          class="relative w-full max-w-5xl"
+          (click)="$event.stopPropagation()"
+        >
+          <video
+            [src]="optimizedUrl()"
+            class="w-full h-auto max-h-[85vh] object-contain rounded-xl"
+            autoplay
+            controls
+          ></video>
+
+          <button
+            (click)="toggleExpand()"
+            class="absolute top-4 right-4 text-white text-3xl"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    }
+
+  `
+  ,
   styles: [`
     :host { display: block; height: 100%; }
   `]
