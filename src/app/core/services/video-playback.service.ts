@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class VideoPlaybackService {
-
-    private activeVideo: HTMLVideoElement | null = null;
+    private currentVideo: HTMLVideoElement | null = null;
 
     register(video: HTMLVideoElement) {
-        // Si une autre vidéo joue → on la coupe
-        if (this.activeVideo && this.activeVideo !== video) {
-            this.activeVideo.pause();
-            this.activeVideo.currentTime = 0;
+        if (this.currentVideo && this.currentVideo !== video) {
+            this.currentVideo.pause();
+            this.currentVideo.currentTime = 0;
         }
-
-        this.activeVideo = video;
+        this.currentVideo = video;
     }
 
     unregister(video: HTMLVideoElement) {
-        if (this.activeVideo === video) {
-            this.activeVideo = null;
+        if (this.currentVideo === video) {
+            this.currentVideo = null;
         }
     }
 }
