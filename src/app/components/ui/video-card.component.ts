@@ -17,7 +17,16 @@ import { HostListener } from '@angular/core';
             border border-slate-100 hover:-translate-y-1">
 
       <!-- Video Player container -->
-      <div class="relative bg-black overflow-hidden transition-all duration-500">
+      <div
+        class="relative bg-black overflow-hidden transition-all duration-500"
+        [class.scale-105]="isHovered() && !isExpanded()"
+        [class.z-20]="isHovered()"
+        [class.aspect-[9/16]]="isPortrait()"
+        [class.aspect-[16/9]]="!isPortrait()"
+        (mouseenter)="onHover(true)"
+        (mouseleave)="onHover(false)"
+      >
+
         @if (posterUrl()) {
           <div 
             class="absolute inset-0 bg-center bg-cover blur-3xl scale-110 opacity-50 z-0"
@@ -152,8 +161,7 @@ export class VideoCardComponent {
 
   isMuted = signal(true);
   isExpanded = signal(false);
-
-
+  isHovered = signal(false);
   isPlaying = signal(false);
   videoElement = viewChild<ElementRef<HTMLVideoElement>>('videoPlayer');
 
@@ -195,15 +203,11 @@ export class VideoCardComponent {
   toggleExpand() {
     this.isExpanded.update(v => !v);
 
-    const video = this.videoElement()?.nativeElement;
-    if (!video) return;
-
-    if (this.isExpanded()) {
-      video.play();
-    } else {
-      video.pause();
+    if (!this.isExpanded()) {
+      this.isHovered.set(false); // reset hover si fermeture
     }
   }
+
 
   toggleMute(event: Event) {
     event.stopPropagation();
@@ -265,6 +269,11 @@ export class VideoCardComponent {
     if (video) {
       this.playbackService.unregister(video);
     }
+  }
+
+  onHover(state: boolean) {
+    if (this.isExpanded()) return; // ne pas hover si fullscreen
+    this.isHovered.set(state);
   }
 
 }
