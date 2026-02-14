@@ -14,12 +14,13 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
     <div class="group relative bg-white rounded-2xl overflow-hidden 
             shadow-md hover:shadow-2xl transition-all duration-500 
             border border-slate-100 hover:-translate-y-2 
-            hover:shadow-black/20">
+            hover:shadow-black/20
+            max-w-[320px] sm:max-w-sm md:max-w-md mx-auto rounded-xl">
 
       <!-- Video Player container -->
       <div
         class="relative bg-black overflow-hidden" 
-        [class.aspect-[9/16]]="isPortrait()"
+        [class.aspect-[3/4]]="isPortrait()"
         [class.aspect-[16/9]]="!isPortrait()"
       >
       @if (posterUrl()) {
@@ -33,7 +34,7 @@ import { VideoPlaybackService } from '../../core/services/video-playback.service
         <video 
             #videoPlayer
             [poster]="posterUrl()"
-            class="relative z-10 w-full h-full object-contain bg-black transition-all duration-700 group-hover:scale-105"
+            class="relative z-10 w-full h-full object-contain bg-black transition-all duration-700 group-hover:scale-105 rounded-xl"
             playsinline
             loading="lazy"
             preload="none"
