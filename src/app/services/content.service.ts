@@ -71,7 +71,7 @@ export class ContentService {
         this.http.get<any[]>(this.apiUrl)
       );
 
-      const cloudName = 'eurocoat'; // 🔥 METS TON CLOUD NAME ICI
+      const cloudName = 'dupcar9en'; // 🔥 METS TON CLOUD NAME ICI
 
       const mappedVideos: ProjectMedia[] = apiVideos.map(video => ({
         type: 'video',
